@@ -13,6 +13,7 @@ class Visita extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'nombre_apellido',
         'identificacion',
         'hta',

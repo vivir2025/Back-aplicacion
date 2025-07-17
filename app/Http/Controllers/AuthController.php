@@ -67,4 +67,6 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Perfil actualizado correctamente', 'usuario' => $usuario->load('sede')]);
     }
+
+
 }

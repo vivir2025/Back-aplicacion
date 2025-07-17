@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Paciente extends Model
 {
@@ -13,6 +14,7 @@ class Paciente extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'identificacion',
         'fecnacimiento',
         'nombre',
@@ -22,6 +24,15 @@ class Paciente extends Model
         'latitud',
         'idsede'
     ];
+     protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
 
     public function sede()
     {
@@ -32,4 +43,5 @@ class Paciente extends Model
     {
         return $this->hasMany(Visita::class, 'idpaciente');
     }
+    
 }

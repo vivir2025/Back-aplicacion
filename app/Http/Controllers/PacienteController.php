@@ -12,21 +12,26 @@ class PacienteController extends Controller
         return Paciente::with('sede')->get();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'identificacion' => 'required|unique:pacientes',
+   public function store(Request $request)
+{
+    $request->validate([
+        'identificacion' => 'required|unique:pacientes',
             'fecnacimiento' => 'required|date',
             'nombre' => 'required',
             'apellido' => 'required',
             'genero' => 'required',
             'idsede' => 'required|exists:sedes,id',
         ]);
-
+   try {
         $paciente = Paciente::create($request->all());
-
-        return response()->json($paciente, 201);
+        return response()->json($paciente->load('sede'), 201); // Carga la relación
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Error al crear paciente',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function show($id)
     {
